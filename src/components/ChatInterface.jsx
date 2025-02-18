@@ -7,7 +7,40 @@ import ErrorMessage from "./ErrorMessage";
 import ThemeSwitcher from "./ThemeSwitcher.jsx";
 
 
-// const TRANSLATOR_API_ACTION_TOKEN
+//Let's talk to API Here
+
+const API_TOKEN = import.meta.env.VITE_TRANSLATOR_API_KEY;
+
+const translateText = async (text, targetLang) => {
+    try {
+        const response = await fetch("https://chromeai.googleusercontent.com/v1/translator:translateText", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${API_TOKEN}`,
+            },
+            body: JSON.stringify({
+                text: text,
+                target_language: targetLang,
+            }),
+        });
+
+        if(!response.ok) {
+            throw new Error(`Could not Translate: ${response.statusText}`)
+        }
+
+        const data = await response.json();
+        return data.translatedText;
+    } catch (error) {
+        console.error("Error translating text:", error);
+        return "Translation error";
+    }
+};
+
+
+
+
+
 
 const ChatInterface = () => {
     const [messages, setMessages] = useState(() => {
