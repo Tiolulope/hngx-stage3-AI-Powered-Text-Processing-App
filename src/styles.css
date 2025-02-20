@@ -386,3 +386,35 @@ body {
         font-size: 1rem;
     }
 }
+
+.summary-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: fadeIn 0.5s ease;
+}
+
+.summary-button:hover {
+    background-color: var(--button-hover-bg);
+    transform: scale(1.05);
+}
+
+.summary-button:active {
+    transform: scale(0.95);
+}
+
+
+.summary-button::before {
+    content: "📝"; /* You can replace this with an icon or SVG */
+    font-size: 1.2rem;
+}

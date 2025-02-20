@@ -1,6 +1,10 @@
 const SummaryButton = ({ onSummarize }) => {
     return (
-        <button onClick={onSummarize} aria-label="Summarize">
+        <button
+            onClick={onSummarize}
+            className="summary-button"
+            aria-label="Summarize"
+        >
             Summarize
         </button>
     );
