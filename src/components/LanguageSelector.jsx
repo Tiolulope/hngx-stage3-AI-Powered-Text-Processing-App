@@ -11,7 +11,7 @@ const LanguageSelector = ({ selectedLang, onChange }) => {
     return (
         <div className="language-selector-container">
             <label htmlFor="language-select" className="language-label">
-                Choose a Language:
+                Choose a Language to translate and summarize:
             </label>
             <select
                 id="language-select"

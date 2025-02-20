@@ -7,7 +7,7 @@ import "./styles.css";
 const App = () => {
     return (
         <Router>
-            <div className="app-container">
+            <div>
                 <Navbar />
                 <Routes>
                     <Route path="/" element={<WelcomePage />} />
