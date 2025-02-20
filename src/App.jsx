@@ -7,11 +7,13 @@ import "./styles.css";
 const App = () => {
     return (
         <Router>
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<WelcomePage />} />
-                <Route path="/chat" element={<ChatInterface />} />
-            </Routes>
+            <div className="app-container">
+                <Navbar />
+                <Routes>
+                    <Route path="/" element={<WelcomePage />} />
+                    <Route path="/chat" element={<ChatInterface />} />
+                </Routes>
+            </div>
         </Router>
     );
 }
