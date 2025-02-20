@@ -95,7 +95,7 @@ const ChatInterface = () => {
 
     return (
         <div className="chat-container">
-            <h1 className="chat-title">Sultan-Lab</h1>
+            <h1 className="chat-title">SultanLab</h1>
             <div className="chat-box">
                 {messages.map((msg, index) => (
                     <Message
