@@ -14,28 +14,32 @@ const ChatInterface = () => {
 
     useEffect(() => {
         const tokenElement = document.querySelector("meta[name='google-ai-api-token']");
-        if (tokenElement) {
+        if (tokenElement?.content) {
             setApiToken(tokenElement.content);
-            console.log("API Token from meta:", tokenElement.content);
+            console.log("API Token retrieved:", tokenElement.content);
         } else {
-            console.warn("API token meta tag not found! Using fallback.");
-            setApiToken("\n" +
-                "AuFXgJcLUjLclIYh6Qjl7oPqudB3yPjQeWrKTFnYrnpFV1N1WUgVqzzQHz8hl/KWrZ4EQsszHlgheb+xX7q/3w4AAABXeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJmZWF0dXJlIjoiTGFuZ3VhZ2VEZXRlY3Rpb25BUEkiLCJleHBpcnkiOjE3NDk1OTk5OTl9\n" +
-                "\n");
-            console.warn("API token meta tag not found or empty! Using fallback.");
-            setApiToken("your-fallback-token-here");
+            console.error("API token meta tag not found or empty!");
+            setError("Missing API token.");
         }
     }, []);
 
     const getAIResponse = async (text) => {
+        if (!apiToken) {
+            setError("API token is missing.");
+            return "AI response unavailable.";
+        }
+
         try {
-            const response = await fetch("https://chromeai.googleusercontent.com/v1/text:summarize", {
+            const response = await fetch("", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${apiToken}`,
                 },
-                body: JSON.stringify({ text }),
+                body: JSON.stringify({
+                    text,
+                    max_length: 150,
+                }),
             });
 
             if (!response.ok) {
@@ -44,10 +48,11 @@ const ChatInterface = () => {
             }
 
             const data = await response.json();
-            return data.result || "AI response unavailable.";
+            console.log("AI Response:", data);
+            return data?.result ?? "AI response unavailable.";
         } catch (error) {
             console.error("Error fetching AI response:", error);
-            setError(`API request failed: ${error.message}`);
+            setError(error.message);
             return "AI response unavailable.";
         }
     };
@@ -60,15 +65,11 @@ const ChatInterface = () => {
         }
 
         try {
-
-            const detectedLang = await detectLanguage(inputText);
-            setMessages((prevMessages) => [...prevMessages, { text: inputText, type: "user", detectedLang }]);
-
+            setMessages((prevMessages) => [...prevMessages, { text: inputText, type: "user" }]);
             setInputText("");
 
             const aiResponse = await getAIResponse(inputText);
             setMessages((prevMessages) => [...prevMessages, { text: aiResponse, type: "ai" }]);
-
         } catch (error) {
             console.error("Error sending message:", error);
             setError("Failed to send message.");
@@ -88,11 +89,9 @@ const ChatInterface = () => {
             <h1 className="chat-title">Sultan-Lab</h1>
             <div className="chat-box">
                 {messages.map((msg, index) => (
-                    <Message key={index} text={msg.text} type={msg.type} detectedLang={msg.detectedLang} />
+                    <Message key={index} text={msg.text} type={msg.type} />
                 ))}
             </div>
-
-
             <LanguageSelector selectedLang={selectedLang} onChange={setSelectedLang} />
             {messages.length > 0 && messages[messages.length - 1].text.length > 150 && (
                 <SummaryButton text={messages[messages.length - 1].text} onSummarize={handleSummarize} />
@@ -104,5 +103,3 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
-
-
