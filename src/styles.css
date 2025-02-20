@@ -1,4 +1,4 @@
-/* Global Variables */
+
 :root {
     --primary-color: #007bff;
     --secondary-color: #6c757d;
@@ -14,7 +14,7 @@
     --button-hover-bg: #0056b3;
 }
 
-/* Dark Mode Variables */
+
 body.dark-mode {
     --text-color: #ffffff;
     --background-color: #1a1a1a;
@@ -24,7 +24,7 @@ body.dark-mode {
     --button-hover-bg: #555;
 }
 
-/* Light Mode Variables */
+
 body.light-mode {
     --text-color: #333333;
     --background-color: #ffffff;
@@ -34,7 +34,7 @@ body.light-mode {
     --button-hover-bg: #0056b3;
 }
 
-/* Global Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -48,7 +48,7 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Navbar */
+
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -94,7 +94,6 @@ body {
     transform: scale(0.95);
 }
 
-/* Welcome Page */
 .welcome-container {
     display: flex;
     flex-direction: column;
@@ -144,7 +143,7 @@ body {
     transform: scale(0.95);
 }
 
-/* Chat Interface */
+
 .chat-container {
     max-width: 800px;
     margin: 0 auto;
@@ -206,7 +205,7 @@ body {
     margin-top: 5px;
 }
 
-/* Input Box */
+
 .input-container {
     display: flex;
     align-items: center;
@@ -261,7 +260,7 @@ body {
     background-color: var(--danger-color);
 }
 
-/* Language Selector */
+
 .language-selector {
     margin: 20px 0;
     display: flex;
@@ -295,7 +294,7 @@ body {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Custom Dropdown Arrow */
+
 .language-selector select {
     appearance: none;
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
@@ -305,7 +304,7 @@ body {
     padding-right: 30px;
 }
 
-/* Error Message */
+
 .error {
     color: var(--danger-color);
     font-size: 0.9em;
@@ -313,7 +312,7 @@ body {
     text-align: center;
 }
 
-/* Animations */
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -346,7 +345,7 @@ body {
     }
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .chat-container {
         padding: 15px;
