@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Message from "./Message";
 import InputBox from "./InputBox";
 import LanguageSelector from "./LanguageSelector";
@@ -10,78 +10,89 @@ const ChatInterface = () => {
     const [selectedLang, setSelectedLang] = useState("en");
     const [inputText, setInputText] = useState("");
     const [error, setError] = useState(null);
-    const [apiToken, setApiToken] = useState("");
+    const [detectedLanguage, setDetectedLanguage] = useState("");
+    const [summary, setSummary] = useState("");
+    const [translation, setTranslation] = useState("");
 
-    useEffect(() => {
-        const tokenElement = document.querySelector("meta[name='google-ai-api-token']");
-        if (tokenElement?.content) {
-            setApiToken(tokenElement.content);
-            console.log("API Token retrieved:", tokenElement.content);
-        } else {
-            console.error("API token meta tag not found or empty!");
-            setError("Missing API token.");
-        }
-    }, []);
-
-    const getAIResponse = async (text) => {
-        if (!apiToken) {
-            setError("API token is missing.");
-            return "AI response unavailable.";
-        }
-
+    // Detect the language of the input text
+    const detectLanguage = async (text) => {
         try {
-            const response = await fetch("", {
+            const response = await fetch("http://localhost:5000/detect-language", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${apiToken}`,
                 },
-                body: JSON.stringify({
-                    text,
-                    max_length: 150,
-                }),
+                body: JSON.stringify({ text }),
             });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`API request failed: ${response.status} - ${errorText}`);
-            }
-
+            if (!response.ok) throw new Error("Language detection failed.");
             const data = await response.json();
-            console.log("AI Response:", data);
-            return data?.result ?? "AI response unavailable.";
-        } catch (error) {
-            console.error("Error fetching AI response:", error);
-            setError(error.message);
-            return "AI response unavailable.";
+            setDetectedLanguage(data.languages[0].languageCode);
+        } catch (err) {
+            console.error("Language detection error:", err);
+            setError("Failed to detect language.");
         }
     };
 
+    // Translate the text to the selected language
+    const handleTranslate = async () => {
+        const lastMessage = messages[messages.length - 1];
+        if (!lastMessage) return;
+
+        try {
+            const response = await fetch("http://localhost:5000/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ text: lastMessage.text, targetLang: selectedLang }),
+            });
+
+            if (!response.ok) throw new Error("Translation failed.");
+            const data = await response.json();
+            setTranslation(data.data.translations[0].translatedText);
+        } catch (err) {
+            console.error("Translation error:", err);
+            setError("Failed to translate text.");
+        }
+    };
+
+    // Summarize the text (mock implementation)
+    const summarizeText = async (text) => {
+        try {
+            const summary = `${text.slice(0, 100)}... [summary]`;
+            setSummary(summary);
+        } catch (err) {
+            console.error("Summarization error:", err);
+            setError("Failed to summarize text.");
+        }
+    };
+
+    // Handle sending a message
     const handleSend = async () => {
-        if (!inputText.trim()) return;
-        if (!apiToken) {
-            setError("API token is missing.");
+        if (!inputText.trim()) {
+            setError("Input text cannot be empty.");
             return;
         }
 
-        try {
-            setMessages((prevMessages) => [...prevMessages, { text: inputText, type: "user" }]);
-            setInputText("");
+        setError("");
+        setMessages((prev) => [...prev, { text: inputText, type: "user" }]);
+        setInputText("");
 
-            const aiResponse = await getAIResponse(inputText);
-            setMessages((prevMessages) => [...prevMessages, { text: aiResponse, type: "ai" }]);
-        } catch (error) {
-            console.error("Error sending message:", error);
-            setError("Failed to send message.");
+        // Detect language
+        await detectLanguage(inputText);
+
+        // Summarize if text is long and in English
+        if (inputText.length > 150 && detectedLanguage === "en") {
+            await summarizeText(inputText);
         }
     };
 
-    const handleSummarize = () => {
+    // Handle summarizing the last message
+    const handleSummarize = async () => {
         const lastMessage = messages[messages.length - 1];
-        if (!lastMessage || lastMessage.text.length <= 150) return;
-
-        const summary = `${lastMessage.text.slice(0, 100)}... [summary]`;
-        setMessages((prev) => [...prev, { text: summary, type: "ai" }]);
+        if (!lastMessage || lastMessage.text.length <= 150 || detectedLanguage !== "en") return;
+        await summarizeText(lastMessage.text);
     };
 
     return (
@@ -89,15 +100,26 @@ const ChatInterface = () => {
             <h1 className="chat-title">Sultan-Lab</h1>
             <div className="chat-box">
                 {messages.map((msg, index) => (
-                    <Message key={index} text={msg.text} type={msg.type} />
+                    <Message
+                        key={index}
+                        text={msg.text}
+                        type={msg.type}
+                        detectedLang={detectedLanguage}
+                    />
                 ))}
+                {detectedLanguage && <p>Detected Language: {detectedLanguage}</p>}
+                {summary && <p>Summary: {summary}</p>}
+                {translation && <p>Translation: {translation}</p>}
             </div>
             <LanguageSelector selectedLang={selectedLang} onChange={setSelectedLang} />
-            {messages.length > 0 && messages[messages.length - 1].text.length > 150 && (
-                <SummaryButton text={messages[messages.length - 1].text} onSummarize={handleSummarize} />
+            {messages.length > 0 && messages[messages.length - 1].text.length > 150 && detectedLanguage === "en" && (
+                <SummaryButton onSummarize={handleSummarize} />
             )}
+            <button onClick={handleTranslate} aria-label="Translate">
+                Translate
+            </button>
             {error && <ErrorMessage message={error} />}
-            <InputBox onSend={handleSend} setInputText={setInputText} inputText={inputText} />
+            <InputBox onSend={handleSend} setInputText={setInputText} inputText={inputText} setError = {setError} />
         </div>
     );
 };

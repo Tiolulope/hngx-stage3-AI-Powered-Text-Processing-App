@@ -13,8 +13,11 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <h2>AI Text Processing Engine</h2>
-            <button className="mode-toggle" onClick={() => setDarkMode(!darkMode)}>
+            <h2 className="navbar-title">AI Text Processing Engine</h2>
+            <button
+                className={`mode-toggle ${darkMode ? "dark" : "light"}`}
+                onClick={() => setDarkMode(!darkMode)}
+            >
                 {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
             </button>
         </nav>

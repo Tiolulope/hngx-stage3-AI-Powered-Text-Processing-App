@@ -1,9 +1,5 @@
 const ErrorMessage = ({ message }) => {
-  return message ? (
-      <div className="error-message" role="alert">
-        {message}
-      </div>
-  ) : null;
+    return <p className="error">{message}</p>;
 };
 
 export default ErrorMessage;

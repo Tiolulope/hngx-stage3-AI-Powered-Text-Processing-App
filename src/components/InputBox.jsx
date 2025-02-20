@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { FaPaperPlane, FaMicrophone } from "react-icons/fa";
+import PropTypes from "prop-types";
 
-const InputBox = ({ onSend }) => {
-    const [inputText, setInputText] = useState("");
+const InputBox = ({ onSend, setInputText, inputText, setError }) => {
     const [isRecording, setIsRecording] = useState(false);
 
     const handleSend = () => {
-        if (!inputText.trim()) return;
+        if (!inputText.trim()) {
+            setError("Input text cannot be empty."); // Use setError
+            return;
+        }
         onSend(inputText);
         setInputText("");
     };
@@ -20,7 +23,7 @@ const InputBox = ({ onSend }) => {
 
     const handleVoiceInput = () => {
         if (!("webkitSpeechRecognition" in window)) {
-            alert("Speech recognition is not supported in this browser.");
+            setError("Speech recognition is not supported in this browser."); // Use setError
             return;
         }
 
@@ -45,7 +48,10 @@ const InputBox = ({ onSend }) => {
             <textarea
                 className="chat-input"
                 value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
+                onChange={(e) => {
+                    setInputText(e.target.value);
+                    setError(""); // Clear error when typing
+                }}
                 placeholder="Enter Prompt"
                 onKeyDown={handleKeyPress}
                 aria-label="Message input"
@@ -67,6 +73,13 @@ const InputBox = ({ onSend }) => {
             </button>
         </div>
     );
+};
+
+InputBox.propTypes = {
+    onSend: PropTypes.func.isRequired,
+    setInputText: PropTypes.func.isRequired,
+    inputText: PropTypes.string.isRequired,
+    setError: PropTypes.func.isRequired, // Add setError to prop types
 };
 
 export default InputBox;
