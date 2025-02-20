@@ -1,7 +1,7 @@
 const Navbar = () => {
     return (
         <nav className="navbar">
-            <h2>AI Text Processor and Translator Engine</h2>
+            <h2>AI Text Processing Engine</h2>
         </nav>
     );
 };

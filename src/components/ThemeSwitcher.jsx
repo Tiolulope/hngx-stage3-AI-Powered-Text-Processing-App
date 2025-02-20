@@ -8,6 +8,7 @@ const ThemeSwitcher = () => {
     useEffect(() => {
         document.body.classList.toggle("dark-mode", darkMode);
         localStorage.setItem("theme", darkMode ? "dark" : "light")
+        console.log("ThemeSwitcher mounted!");
     }, [darkMode]);
     return (
         <button className="theme-switcher" onClick={() => setDarkMode(!darkMode)}>

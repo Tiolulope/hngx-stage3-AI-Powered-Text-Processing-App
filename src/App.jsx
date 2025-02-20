@@ -10,7 +10,7 @@ const App = () => {
             <Navbar />
             <Routes>
                 <Route path="/" element={<WelcomePage />} />
-                <Route path="/chat" element={<ChatInterface />} className="app-container" />
+                <Route path="/chat" element={<ChatInterface />} />
             </Routes>
         </Router>
     );
