@@ -415,6 +415,6 @@ body {
 
 
 .summary-button::before {
-    content: "📝"; /* You can replace this with an icon or SVG */
+    content: "📝";
     font-size: 1.2rem;
 }

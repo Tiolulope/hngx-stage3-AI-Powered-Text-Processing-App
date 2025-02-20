@@ -79,7 +79,7 @@ InputBox.propTypes = {
     onSend: PropTypes.func.isRequired,
     setInputText: PropTypes.func.isRequired,
     inputText: PropTypes.string.isRequired,
-    setError: PropTypes.func.isRequired, // Add setError to prop types
+    setError: PropTypes.func.isRequired,
 };
 
 export default InputBox;

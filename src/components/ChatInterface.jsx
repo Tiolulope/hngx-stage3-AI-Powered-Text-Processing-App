@@ -14,7 +14,7 @@ const ChatInterface = () => {
     const [summary, setSummary] = useState("");
     const [translation, setTranslation] = useState("");
 
-    // Detect the language of the input text
+
     const detectLanguage = async (text) => {
         try {
             const response = await fetch("http://localhost:5000/detect-language", {
@@ -34,7 +34,7 @@ const ChatInterface = () => {
         }
     };
 
-    // Translate the text to the selected language
+
     const handleTranslate = async () => {
         const lastMessage = messages[messages.length - 1];
         if (!lastMessage) return;
@@ -57,7 +57,7 @@ const ChatInterface = () => {
         }
     };
 
-    // Summarize the text (mock implementation)
+
     const summarizeText = async (text) => {
         try {
             const summary = `${text.slice(0, 100)}... [summary]`;
@@ -68,7 +68,6 @@ const ChatInterface = () => {
         }
     };
 
-    // Handle sending a message
     const handleSend = async () => {
         if (!inputText.trim()) {
             setError("Input text cannot be empty.");
@@ -79,16 +78,15 @@ const ChatInterface = () => {
         setMessages((prev) => [...prev, { text: inputText, type: "user" }]);
         setInputText("");
 
-        // Detect language
         await detectLanguage(inputText);
 
-        // Summarize if text is long and in English
+
         if (inputText.length > 150 && detectedLanguage === "en") {
             await summarizeText(inputText);
         }
     };
 
-    // Handle summarizing the last message
+
     const handleSummarize = async () => {
         const lastMessage = messages[messages.length - 1];
         if (!lastMessage || lastMessage.text.length <= 150 || detectedLanguage !== "en") return;
