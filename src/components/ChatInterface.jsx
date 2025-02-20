@@ -22,6 +22,8 @@ const ChatInterface = () => {
             setApiToken("\n" +
                 "AuFXgJcLUjLclIYh6Qjl7oPqudB3yPjQeWrKTFnYrnpFV1N1WUgVqzzQHz8hl/KWrZ4EQsszHlgheb+xX7q/3w4AAABXeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjUxNzMiLCJmZWF0dXJlIjoiTGFuZ3VhZ2VEZXRlY3Rpb25BUEkiLCJleHBpcnkiOjE3NDk1OTk5OTl9\n" +
                 "\n");
+            console.warn("API token meta tag not found or empty! Using fallback.");
+            setApiToken("your-fallback-token-here");
         }
     }, []);
 
@@ -102,3 +104,5 @@ const ChatInterface = () => {
 };
 
 export default ChatInterface;
+
+
