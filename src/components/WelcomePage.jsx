@@ -7,11 +7,11 @@ const WelcomePage = () => {
         <div className="welcome-container">
             <div className="header">
                 <h1 className="title">
-                    Welcome to Sultan-Lab AI Text Processing Engine
+                    Welcome to SultanLab AI Text Processing Engine
                 </h1>
             </div>
             <p className="description">
-                AI-powered text processing with summarization, translation, and text detection. Let&apos;s dive in.
+                Enjoy The AI-powered text processing with summarization, translation, and text detection. Let&apos;s dive in.
             </p>
             <button onClick={() => navigate("/chat")} className="start-button">
                 Get Started
