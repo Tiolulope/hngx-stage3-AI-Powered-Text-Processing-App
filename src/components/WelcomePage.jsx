@@ -7,7 +7,7 @@ const WelcomePage = () => {
         <div className="welcome-container">
             <div className="header">
                 <h1 className="title">
-                    Welcome to SultanLab AI Text Processing Engine
+                    Welcome to SultanLab.AI Text Processing App
                 </h1>
             </div>
             <p className="description">
